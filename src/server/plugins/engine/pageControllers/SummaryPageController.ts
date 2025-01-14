@@ -77,7 +77,7 @@ export class SummaryPageController extends QuestionPageController {
    * Returns an async function. This is called in plugin.ts when there is a GET request at `/{id}/{path*}`,
    */
   makeGetRouteHandler() {
-    return async (
+    return (
       request: FormRequest,
       context: FormContext,
       h: Pick<ResponseToolkit, 'redirect' | 'view'>
@@ -86,8 +86,8 @@ export class SummaryPageController extends QuestionPageController {
 
       const viewModel = this.getSummaryViewModel(request, context)
 
-      viewModel.hasMissingNotificationEmail =
-        await this.hasMissingNotificationEmail(request, context)
+      // viewModel.hasMissingNotificationEmail =
+      //   await this.hasMissingNotificationEmail(request, context)
 
       return h.view(viewName, viewModel)
     }
@@ -104,13 +104,13 @@ export class SummaryPageController extends QuestionPageController {
       h: Pick<ResponseToolkit, 'redirect' | 'view'>
     ) => {
       const { model } = this
-      const { params } = request
+      // const { params } = request
       const { state } = context
 
       const { cacheService } = request.services([])
 
       // Get the form metadata using the `slug` param
-      const { notificationEmail } = await getFormMetadata(params.slug)
+      const { notificationEmail } = {} // await getFormMetadata(params.slug)
       const { isPreview } = checkFormStatus(request.path)
       const emailAddress = notificationEmail ?? this.model.def.outputEmail
 
@@ -248,11 +248,11 @@ async function sendEmail(
 
   // Submit data
   request.logger.info(logTags, 'Submitting data')
-  const submitResponse = await submitData(items, emailAddress, request.yar.id)
+  const submitResponse = { result: { files: { main: 'grants.csv' } } } // await submitData(items, emailAddress, request.yar.id)
 
-  if (submitResponse === undefined) {
-    throw Boom.badRequest('Unexpected empty response from submit api')
-  }
+  // if (submitResponse === undefined) {
+  //   throw Boom.badRequest('Unexpected empty response from submit api')
+  // }
 
   // Get submission email personalisation
   request.logger.info(logTags, 'Getting personalisation data')

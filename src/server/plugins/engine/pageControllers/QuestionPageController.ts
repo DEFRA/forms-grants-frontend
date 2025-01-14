@@ -344,8 +344,8 @@ export class QuestionPageController extends PageController {
         return evaluatedComponent
       })
 
-      viewModel.hasMissingNotificationEmail =
-        await this.hasMissingNotificationEmail(request, context)
+      // viewModel.hasMissingNotificationEmail =
+      //   await this.hasMissingNotificationEmail(request, context)
 
       return h.view(viewName, viewModel)
     }
