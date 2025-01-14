@@ -1,3 +1,5 @@
+import path from 'node:path'
+
 import { config } from '~/src/config/index.js'
 import { createLogger } from '~/src/server/common/helpers/logging/logger.js'
 import { createServer } from '~/src/server/index.js'
@@ -14,7 +16,13 @@ process.on('unhandledRejection', (error) => {
  * Main entrypoint to the application.
  */
 async function startServer() {
-  const server = await createServer()
+  const exampleFormFile = new URL('./forms/grants.json', import.meta.url)
+    .pathname
+
+  const server = await createServer({
+    formFileName: path.basename(exampleFormFile),
+    formFilePath: path.dirname(exampleFormFile)
+  })
   await server.start()
 
   process.send?.('online')
